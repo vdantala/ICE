@@ -1,0 +1,71 @@
+SELECT COUNT(voter_id) as count, c.candidate_id, c.name
+FROM voter v inner join candidate c on v.candidate_id=c.candidate_id
+GROUP BY candidate_id order by count desc LIMIT 1;
+
+SELECT COUNT(voter_id) as count, c.candidate_id, c.name
+FROM voter v inner join candidate c on v.candidate_id=c.candidate_id
+GROUP BY candidate_id order by count desc LIMIT 1,2;
+
+
+
+
+DROP TABLE IF EXISTS `candidate`;
+CREATE TABLE `candidate` (
+  `candidate_id` varchar(50) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  PRIMARY KEY (`candidate_id`),
+  CONSTRAINT `candidate_ibfk_1` FOREIGN KEY (`candidate_id`) REFERENCES `citizen` (`citizen_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+INSERT INTO `candidate` (`candidate_id`, `name`) VALUES
+('101',	'George Washington'),
+('102',	'John Adams'),
+('103',	'Thomas Jefferson'),
+('104',	'James Madison'),
+('105',	'John Quincy Adams'),
+('106',	'Andrew Jackson');
+
+DROP TABLE IF EXISTS `citizen`;
+CREATE TABLE `citizen` (
+  `citizen_id` varchar(50) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  PRIMARY KEY (`citizen_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+INSERT INTO `citizen` (`citizen_id`, `name`) VALUES
+('101',	'George Washington'),
+('102',	'John Adams'),
+('103',	'Thomas Jefferson'),
+('104',	'James Madison'),
+('105',	'John Quincy Adams'),
+('106',	'Andrew Jackson'),
+('107',	'Paul Gilbertson'),
+('108',	'Breanne Vels'),
+('109',	'Melanie Scott'),
+('110',	'Fidez Tupaz'),
+('111',	'Praveen Prakash'),
+('112',	'Danile Choi'),
+('113',	'Hari Charan'),
+('114',	'Venkat Dantala'),
+('115',	'Teju Haricharan'),
+('116',	'Vivek Rajouli'),
+('117',	'Vidya Sindhu');
+
+DROP TABLE IF EXISTS `voter`;
+CREATE TABLE `voter` (
+  `voter_id` varchar(50) NOT NULL,
+  `citizen_id` varchar(50) NOT NULL,
+  `candidate_id` varchar(50) NOT NULL,
+  PRIMARY KEY (`voter_id`,`citizen_id`,`candidate_id`),
+  KEY `citizen_id` (`citizen_id`),
+  KEY `candidate_id` (`candidate_id`),
+  CONSTRAINT `voter_ibfk_2` FOREIGN KEY (`citizen_id`) REFERENCES `citizen` (`citizen_id`),
+  CONSTRAINT `voter_ibfk_3` FOREIGN KEY (`candidate_id`) REFERENCES `candidate` (`candidate_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+INSERT INTO `voter` (`voter_id`, `citizen_id`, `candidate_id`) VALUES
+('v1',	'107',	'101'),
+('v2',	'108',	'101'),
+('v3',	'109',	'102'),
+('v4',	'110',	'101'),
+('v5',	'111',	'102');
